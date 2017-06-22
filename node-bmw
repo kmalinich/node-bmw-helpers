@@ -101,9 +101,10 @@ update() {
 
 	_log "Downloading ${APP} update"
 	git pull
+	git -c color.submodule=always submodule update --init
 
-	_log "Performing npm install"
-	npm install
+	_log "Performing rebuild"
+	rebuild
 
 	restart
 }
