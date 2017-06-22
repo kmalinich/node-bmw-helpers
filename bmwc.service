@@ -1,0 +1,28 @@
+[Unit]
+Description = node-bmw client
+
+After    = network.target
+Requires = network.target
+
+
+[Service]
+WorkingDirectory = /usr/local/bmwc
+
+Group = pi
+User  = pi
+
+Nice           = -19
+OOMScoreAdjust = -1000
+
+Environment = NODE_ENV=production
+Environment = NODE_PATH=/usr/local/bmwc/node_modules:/usr/lib/node_modules
+
+ExecStart = /usr/bin/env node --throw-deprecation --trace-warnings --preserve-symlinks /usr/local/bmwc/main.js
+Restart   = always
+
+
+[Install]
+WantedBy = multi-user.target
+
+
+# vim: set syntax=systemd filetype=systemd ts=2 sw=2 tw=0 noet :
