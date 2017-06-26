@@ -1,12 +1,12 @@
 [Unit]
-Description = node-bmw client
+Description = node-bmw daemon
 
 After    = network.target
 Requires = network.target
 
 
 [Service]
-WorkingDirectory = /usr/local/bmwc
+WorkingDirectory = /usr/local/bmwd
 
 Group = pi
 User  = pi
@@ -15,9 +15,9 @@ Nice           = -19
 OOMScoreAdjust = -1000
 
 Environment = NODE_ENV=production
-Environment = NODE_PATH=/usr/local/bmwc/node_modules:/usr/lib/node_modules
+Environment = NODE_PATH=/usr/local/bmwd/node_modules:/usr/lib/node_modules
 
-ExecStart = /usr/bin/env node --throw-deprecation --trace-warnings --preserve-symlinks /usr/local/bmwc/main.js
+ExecStart = /usr/bin/env node --throw-deprecation --trace-warnings --preserve-symlinks /usr/local/bmwd/main.js
 Restart   = always
 
 
