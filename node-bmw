@@ -29,7 +29,7 @@ UNAME="$(uname)"
 
 ARRAY_DIR_SYMLINK=(lib)
 
-[[ "${APP}" == "bmwc" ]] && ARRAY_DIR_SYMLINK=(${ARRAY_DIR_SYMLINK[@]} modules)
+[[ "${APP}" == "bmwcd" ]] && ARRAY_DIR_SYMLINK=(${ARRAY_DIR_SYMLINK[@]} modules)
 
 #### Variables ==final ####
 
