@@ -5,7 +5,7 @@ Documentation=http://www.freedesktop.org/wiki/Software/systemd/APIFileSystems
 ConditionPathIsSymbolicLink=!/var/log
 DefaultDependencies=no
 Conflicts=umount.target
-Before=local-fs.target umount.target
+Before=local-fs.target umount.target syslog.socket
 
 [Mount]
 What=tmpfs
