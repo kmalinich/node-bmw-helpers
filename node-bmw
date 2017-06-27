@@ -27,9 +27,7 @@ SYSTEMD_APP_FILE="${SYSTEMD_DIR}/${SYSTEMD_APP}"
 
 UNAME="$(uname)"
 
-ARRAY_DIR_SYMLINK=(lib)
-
-[[ "${APP}" == "bmwcd" ]] && ARRAY_DIR_SYMLINK=(${ARRAY_DIR_SYMLINK[@]} modules)
+export NODE_PATH="${APP_DIR}/lib:${APP_DIR}/modules:${APP_NM_DIR}:${NODE_PATH}"
 
 #### Variables ==final ####
 
@@ -76,6 +74,7 @@ debug() {
 
 	export NODE_ENV="development"
 	export NODE_BMW_DEBUG_PROTO="true"
+	echo ${NODE_PATH}
 	/usr/bin/env node --trace-warnings --preserve-symlinks ${APP_FILE}
 	unset NODE_BMW_DEBUG_PROTO NODE_ENV
 }
@@ -125,13 +124,6 @@ rebuild() {
 		_log "Fixing permissions on directory '${APP_NM_DIR}'"
 		sudo chown -R ${APP_USER}:${APP_USER} ${APP_NM_DIR}
 	fi
-
-	cd ${APP_NM_DIR}
-
-	for DIR_SYMLINK in ${ARRAY_DIR_SYMLINK[@]}; do
-		_log "Re-symlinking .js file(s) under directory '${DIR_SYMLINK}'"
-		ln -fs ../${DIR_SYMLINK}/*.js .
-	done
 }
 
 install() {
