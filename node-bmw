@@ -74,7 +74,6 @@ debug() {
 
 	export NODE_ENV="development"
 	export NODE_BMW_DEBUG_PROTO="true"
-	echo ${NODE_PATH}
 	/usr/bin/env node --trace-warnings --preserve-symlinks ${APP_FILE}
 	unset NODE_BMW_DEBUG_PROTO NODE_ENV
 }
