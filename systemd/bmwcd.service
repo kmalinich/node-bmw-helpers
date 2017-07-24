@@ -8,8 +8,8 @@ Requires = network.target
 [Service]
 WorkingDirectory = /usr/local/bmwcd
 
-Group = root
-User  = root
+Group = pi
+User  = pi
 
 Nice           = -19
 OOMScoreAdjust = -1000

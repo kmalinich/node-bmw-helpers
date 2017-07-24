@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+ARRAY_UNITS=(
+bmwcd
+bmwd
+bmwi@can0
+bmwi@can1
+bmwi@dbus
+bmwi@ibus
+bmwi@kbus
+bmwi@lcd
+nginx
+php7.1-fpm
+)
+
+# for UNIT in ${ARRAY_UNITS[@]}; do
+# 	sudo systemctl
+# done
+
+
+ARRAY_INTERFACES=(
+can0
+can1
+dbus
+ibus
+kbus
+lcd
+)
+
+if [[ "${1}" ]]; then
+	for INTERFACE in ${ARRAY_INTERFACES[@]}; do
+		sudo systemctl ${1} bmwi@${INTERFACE}.service
+	done
+fi
+
+for INTERFACE in ${ARRAY_INTERFACES[@]}; do
+	sudo systemctl -n 0 status bmwi@${INTERFACE}.service
+	echo
+done
