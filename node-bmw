@@ -27,7 +27,7 @@ SYSTEMD_APP_FILE="${SYSTEMD_DIR}/${SYSTEMD_APP}"
 
 UNAME="$(uname)"
 
-export NODE_PATH="${APP_DIR}/lib:${APP_DIR}/modules:${APP_NM_DIR}:${NODE_PATH}"
+export NODE_PATH="${APP_DIR}/lib:${APP_DIR}/modules:${APP_DIR}/share:${APP_NM_DIR}:${NODE_PATH}"
 
 #### Variables ==final ####
 
