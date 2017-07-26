@@ -74,7 +74,7 @@ debug() {
 
 	export NODE_ENV="development"
 	export NODE_BMW_DEBUG_PROTO="true"
-	/usr/bin/env node --trace-warnings --preserve-symlinks ${APP_FILE} ${2}
+	/usr/bin/env node --trace-warnings --preserve-symlinks ${APP_FILE} ${1}
 	unset NODE_BMW_DEBUG_PROTO NODE_ENV
 }
 
@@ -82,7 +82,7 @@ launch() {
 	[[ "${UNAME}" == "Linux" ]] && stop > /dev/null 2>&1
 
 	export NODE_ENV="production"
-	/usr/bin/env node --throw-deprecation --trace-warnings --preserve-symlinks ${APP_FILE} ${2}
+	/usr/bin/env node --throw-deprecation --trace-warnings --preserve-symlinks ${APP_FILE} ${1}
 	unset NODE_ENV
 }
 
