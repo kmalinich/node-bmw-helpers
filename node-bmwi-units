@@ -1,22 +1,6 @@
 #!/usr/bin/env bash
 
-ARRAY_UNITS=(
-bmwcd
-bmwd
-bmwi@can0
-bmwi@can1
-bmwi@dbus
-bmwi@ibus
-bmwi@kbus
-bmwi@lcd
-nginx
-php7.1-fpm
-)
-
-# for UNIT in ${ARRAY_UNITS[@]}; do
-# 	sudo systemctl
-# done
-
+UNIT_BASE="bmwi"
 
 ARRAY_INTERFACES=(
 can0
@@ -27,13 +11,31 @@ kbus
 lcd
 )
 
-if [[ "${1}" ]]; then
-	for INTERFACE in ${ARRAY_INTERFACES[@]}; do
-		sudo systemctl ${1} bmwi@${INTERFACE}.service
-	done
-fi
+service_name() {
+	echo "${UNIT_BASE}@${1}.service"
+}
 
-for INTERFACE in ${ARRAY_INTERFACES[@]}; do
-	sudo systemctl -n 0 status bmwi@${INTERFACE}.service
+service_cmd() {
+	for INTERFACE in ${ARRAY_INTERFACES[@]}; do
+		local SERVICE_NAME="$(service_name ${INTERFACE})"
+
+		if [[ "${1}" == "start" || "${1}" == "restart" ]]; then
+			if ! systemctl -q is-enabled "${1}"; then
+				echo "Skipping disabled service '${SERVICE_NAME}'"
+			fi
+		fi
+
+		[[ "${2}" != "-q" ]] && echo "Performing '${1}' '${SERVICE_NAME}'"
+
+		sudo systemctl "${1}" "${SERVICE_NAME}"
+		[[ "${1}" == "status" ]] && echo
+	done
+}
+
+
+if [[ "${1}" ]]; then
+	service_cmd "${1}"
 	echo
-done
+else
+	service_cmd status -q
+fi
