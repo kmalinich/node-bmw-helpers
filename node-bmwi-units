@@ -5,11 +5,11 @@ UNIT_BASE="bmwi"
 ARRAY_INTERFACES=(
 can0
 can1
-dbus
 ibus
 kbus
-lcd
 )
+# dbus
+# lcd
 
 service_name() {
 	echo "${UNIT_BASE}@${1}.service"
