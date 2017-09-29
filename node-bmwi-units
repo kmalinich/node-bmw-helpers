@@ -7,17 +7,19 @@ can0
 can1
 ibus
 kbus
+lcd
 )
 # dbus
-# lcd
 
 service_name() {
 	echo "${UNIT_BASE}@${1}.service"
 }
 
 service_cmd() {
-	for INTERFACE in ${ARRAY_INTERFACES[@]}; do
-		local SERVICE_NAME="$(service_name ${INTERFACE})"
+	local SERVICE_NAME
+
+	for INTERFACE in "${ARRAY_INTERFACES[@]}"; do
+		SERVICE_NAME="$(service_name "${INTERFACE}")"
 
 		if [[ "${1}" == "start" || "${1}" == "restart" ]]; then
 			if ! systemctl -q is-enabled "${SERVICE_NAME}"; then
