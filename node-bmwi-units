@@ -22,8 +22,9 @@ service_cmd() {
 		SERVICE_NAME="$(service_name "${INTERFACE}")"
 
 		if [[ "${1}" == "start" || "${1}" == "restart" ]]; then
-			if ! systemctl -q is-enabled "${SERVICE_NAME}"; then
+			if ! systemctl -q is-enabled "${SERVICE_NAME}" 2> /dev/null; then
 				echo "Skipping disabled service '${SERVICE_NAME}'"
+				continue
 			fi
 		fi
 
