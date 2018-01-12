@@ -1,15 +1,11 @@
 [Unit]
 Description = node-bmw %i daemon
 
-After    = bmwd.service
-# Requires = bmwd.service
+Before = bmwcd.service
 
 
 [Service]
 WorkingDirectory = /usr/local/bmwi
-
-Group = pi
-User  = pi
 
 Nice           = -19
 OOMScoreAdjust = -1000
@@ -18,7 +14,9 @@ Environment = NODE_ENV=production
 Environment = NODE_PATH=/usr/local/bmwi/lib:/usr/local/bmwi/modules:/usr/local/bmwi/share:/usr/local/bmwi/node_modules:/usr/lib/node_modules
 
 ExecStart = /usr/bin/env node --throw-deprecation --trace-warnings --preserve-symlinks /usr/local/bmwi/main.js %i
-Restart   = always
+
+Restart    = always
+RestartSec = 0
 
 
 [Install]
