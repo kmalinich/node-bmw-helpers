@@ -1,0 +1,24 @@
+[Unit]
+Description = CANBUS bridge with VIN filter, can1 to can0
+
+After    = network.target
+Requires = network.target
+
+
+[Service]
+CPUAffinity = 3
+
+Nice           = -5
+OOMScoreAdjust = -1000
+
+ExecStart = /usr/bin/candump -B can0 -s 2 can1,380~7FF
+
+Restart    = always
+RestartSec = 1
+
+
+[Install]
+WantedBy = multi-user.target
+
+
+# vim: set syntax=systemd filetype=systemd ts=2 sw=2 tw=0 noet :
