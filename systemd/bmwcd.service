@@ -19,10 +19,10 @@ OOMScoreAdjust = -1000
 Environment = NODE_ENV=production
 Environment = NODE_PATH=/usr/local/bmwcd/lib:/usr/local/bmwcd/modules:/usr/local/bmwcd/share:/usr/local/bmwcd/node_modules:/usr/lib/node_modules
 
-ExecStart = /usr/bin/env node --always-compact --expose-gc --max-old-space-size=128 --max-semi-space-size=2 --throw-deprecation --trace-warnings /usr/local/bmwcd/main.js
+ExecStart = /usr/bin/env node --always-compact --always-opt --always-osr --arm-arch=armv8 --compact-code-space --compilation-cache --expose-gc --gc-global --gc-interval=5 --max-old-space-size=64 --max-semi-space-size=2 --mcpu --memory-reducer --throw-deprecation --trace-warnings /usr/local/bmwcd/main.js
 
 Restart    = always
-RestartSec = 5
+RestartSec = 3
 
 
 [Install]

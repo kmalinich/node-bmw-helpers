@@ -16,10 +16,10 @@ OOMScoreAdjust = -1000
 Environment = NODE_ENV=production
 Environment = NODE_PATH=/usr/local/bmwi/lib:/usr/local/bmwi/modules:/usr/local/bmwi/share:/usr/local/bmwi/node_modules:/usr/lib/node_modules
 
-ExecStart = /usr/bin/env node --always-compact --expose-gc --max-old-space-size=128 --max-semi-space-size=2 --throw-deprecation --trace-warnings /usr/local/bmwi/main.js %i
+ExecStart = /usr/bin/env node --always-compact --always-opt --always-osr --arm-arch=armv8 --compact-code-space --compilation-cache --expose-gc --gc-global --gc-interval=5 --max-old-space-size=64 --max-semi-space-size=2 --mcpu --memory-reducer --throw-deprecation --trace-warnings /usr/local/bmwi/main.js %i
 
 Restart    = always
-RestartSec = 1
+RestartSec = 3
 
 
 [Install]
