@@ -19,7 +19,7 @@ OOMScoreAdjust = -1000
 Environment = NODE_ENV=production
 Environment = NODE_PATH=/usr/local/bmwcd/lib:/usr/local/bmwcd/modules:/usr/local/bmwcd/share:/usr/local/bmwcd/node_modules:/usr/lib/node_modules
 
-ExecStart = /usr/bin/env node --expose-gc --throw-deprecation --trace-warnings /usr/local/bmwcd/main.js
+ExecStart = /usr/bin/env node --always-compact --expose-gc --max-old-space-size=128 --max-semi-space-size=2 --throw-deprecation --trace-warnings /usr/local/bmwcd/main.js
 
 Restart    = always
 RestartSec = 5
