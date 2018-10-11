@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+mapfile -t ARRAY_PORTS < <(netstat -tlpn | awk '/bmw/ {print $4}' | grep -Eo '300[0-9]')
+
+for PORT in "${ARRAY_PORTS[@]}"; do
+	echo "Performing garbage collection on application at port ${PORT}"
+	curl -svv "127.0.0.1:${PORT}/app/gc" | jq .
+	sleep 1
+done
