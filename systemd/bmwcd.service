@@ -1,28 +1,22 @@
 [Unit]
 Description = node-bmw client daemon
 
-After = network.target bmwi@can0.service bmwi@can1.service bmwi@ibus.service bmwi@kbus.service bmwi@lcd.service
+After = bmwi@can0.service bmwi@can1.service bmwi@ibus.service bmwi@kbus.service bmwi@dbus.service bmwi@lcd.service cangw-setup.service
 
-Before = kodi.service nginx.service
-
-Requires = network.target
+# If installed in CAN-only vehicle
+# Requires = cangw-setup.service
 
 
 [Service]
-CPUAffinity = 0
-
 WorkingDirectory = /usr/local/bmwcd
-
-Nice           = -5
-OOMScoreAdjust = -1000
 
 Environment = NODE_ENV=production
 Environment = NODE_PATH=/usr/local/bmwcd/lib:/usr/local/bmwcd/modules:/usr/local/bmwcd/share:/usr/local/bmwcd/node_modules:/usr/lib/node_modules
 
-ExecStart = /usr/bin/env node --always-compact --always-opt --always-osr --arm-arch=armv8 --compact-code-space --compilation-cache --expose-gc --gc-global --gc-interval=5 --max-old-space-size=64 --max-semi-space-size=2 --mcpu --memory-reducer --throw-deprecation --trace-warnings /usr/local/bmwcd/main.js
+ExecStart = /usr/bin/env node --arm-arch=armv8 --always-compact --always-osr --expose-gc --throw-deprecation --trace-warnings /usr/local/bmwcd/main.js
 
 Restart    = always
-RestartSec = 3
+RestartSec = 5
 
 
 [Install]

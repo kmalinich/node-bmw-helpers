@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Load can_gw kernel module if need be
+/sbin/lsmod | /bin/grep -Eq can_gw || /sbin/modprobe can_gw
+
+# Flush any existing CAN gateway rules
+/usr/bin/cangw -F
+
+# Add forwarding rules to forward all except 0x380 (VIN message)
+/usr/bin/cangw -A -s can0 -d can1 -f 380~7FF
+/usr/bin/cangw -A -s can1 -d can0 -f 380~7FF
+
+# Modify 0x291 (time/date) to work properly
+# This was done in a 2004 US market E60 with NBT HW31 fitted
+/usr/bin/cangw -A -s can0 -d can1    -e -f 291:7FF -m SET:IL:2F7.6.1122334455667788
+/usr/bin/cangw -A -s can0 -d can0 -i -e -f 291:7FF -m SET:IL:2F7.6.1122334455667788
+
+exit 0
