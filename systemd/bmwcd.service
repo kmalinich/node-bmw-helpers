@@ -1,7 +1,7 @@
 [Unit]
 Description = node-bmw client daemon
 
-After = bmwi@can0.service bmwi@can1.service bmwi@ibus.service bmwi@kbus.service bmwi@dbus.service bmwi@lcd.service cangw-setup.service
+After = bmwi@can0.service bmwi@can1.service bmwi@ibus.service bmwi@kbus.service bmwi@dbus.service cangw-setup.service
 
 # If installed in CAN-only vehicle
 # Requires = cangw-setup.service
