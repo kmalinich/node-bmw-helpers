@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+# IBUS/KBUS cars
+ARRAY_SERVICES_OLD=(
+'bmwi@can0.service'
+'bmwi@ibus.service'
+'bmwi@kbus.service'
+)
+
+# All-CAN cars (E6x+)
+ARRAY_SERVICES_NEW=(
+'cangw-setup.service'
+'bmwi@can0.service'
+'bmwi@can1.service'
+)
+
+
+ARRAY_SERVICES_ALL=(
+'bmwcd.service'
+'nginx.service'
+)
+
+
+# Config utilized systemd services by hostname (which should contain the vehicle chassis type)
+#
+# Yeah, this is obviously hacky, duh
+if [[ "${HOSTNAME}" == *"e39"* ]]; then
+	ARRAY_SERVICES=("${ARRAY_SERVICES_OLD[@]}")
+else
+	ARRAY_SERVICES=("${ARRAY_SERVICES_NEW[@]}")
+fi
+
+ARRAY_SERVICES+=("${ARRAY_SERVICES_ALL[@]}")
+
+
+case "${1}" in
+	cat)          ACTION="${1}" ;;
+	disable)      ACTION="${1}" ;;
+	enable)       ACTION="${1}" ;;
+	kill)         ACTION="${1}" ;;
+	reset-failed) ACTION="${1}" ;;
+	restart)      ACTION="${1}" ;;
+	start)        ACTION="${1}" ;;
+	status)       ACTION="${1}" ;;
+	stop)         ACTION="${1}" ;;
+
+	*) ACTION="status" ;;
+esac
+
+
+if [[ "${ACTION}" == "restart" ]]; then
+	for UNIT_SERVICE in "${ARRAY_SERVICES[@]}"; do
+		if ! systemctl -q is-enabled "${UNIT_SERVICE}" 2> /dev/null; then
+			echo "Skipping disabled service '${UNIT_SERVICE}'"
+			continue
+		fi
+
+		echo "Restarting service unit '${UNIT_SERVICE}'"
+		sudo systemctl --no-pager "${ACTION}" --full --lines="${2-0}" "${UNIT_SERVICE}"
+	done
+
+	exit 0
+fi
+
+sudo systemctl --no-pager "${ACTION}" --full --lines="${2-0}" "${ARRAY_SERVICES[@]}"
