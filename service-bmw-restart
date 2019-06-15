@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+SLEEP_SEC="${1-60}"
+
+
+_service() {
+	local SRVC="${2}.service"
+
+	echo "Performing '${1}' '${SRVC}"
+
+	/bin/systemctl "${1}" "${SRVC}"
+
+	echo "Sleeping for ${SLEEP_SEC} seconds"
+	sleep "${SLEEP_SEC}"
+}
+
+
+_service stop bmwcd
+_service stop bmwi@can0
+_service stop bmwi@can1
+
+echo "Sleeping for ${SLEEP_SEC} more seconds before restarting services"
+sleep "${SLEEP_SEC}"
+
+_service start bmwcd
+_service start bmwi@can0
+_service start bmwi@can1
+
+/usr/bin/env bash /usr/local/bin/service-bmw
