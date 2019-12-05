@@ -45,11 +45,10 @@ _log() {
 
 _usage() {
 	# Declare vars as local
-	local OPTIONS
+	local OPTIONS="debug|launch|update|rebuild"
 
-	if [[ "${UNAME}" != "Linux" ]]; then
-		OPTIONS="debug|launch|update|rebuild"
-	else
+	# If on Linux, get option names by scraping file
+	if [[ "${UNAME}" == "Linux" ]]; then
 		OPTIONS="$(grep -o '^[[:alpha:]]*.()\ {$' "${HELPER_FILE}" | sed -E -e ':a;N;$!ba;s/\n/|/g' -e 's/\(\)\ \{//g')"
 	fi
 
@@ -82,7 +81,14 @@ debug() {
 
 	export NODE_ENV="development"
 	export NODE_BMW_DEBUG_PROTO="true"
-	/usr/bin/env node --trace-warnings --preserve-symlinks "${APP_FILE}" "${1}"
+
+	/usr/bin/env node \
+		--unhandled-rejections=strict \
+		--throw-deprecation           \
+		--trace-deprecation           \
+		--trace-warnings              \
+		"${APP_FILE}" "${1}"
+
 	unset NODE_BMW_DEBUG_PROTO NODE_ENV
 }
 
@@ -90,7 +96,14 @@ launch() {
 	[[ "${UNAME}" == "Linux" ]] && stop > /dev/null 2>&1
 
 	export NODE_ENV="production"
-	/usr/bin/env node --throw-deprecation --trace-warnings --preserve-symlinks "${APP_FILE}" "${1}"
+
+	/usr/bin/env node \
+		--unhandled-rejections=strict \
+		--throw-deprecation           \
+		--trace-deprecation           \
+		--trace-warnings              \
+		"${APP_FILE}" "${1}"
+
 	unset NODE_ENV
 }
 
@@ -190,9 +203,10 @@ enable() {
 
 	if sudo systemctl -q is-enabled "${SYSTEMD_APP}"; then
 		_log "Enabled ${SYSTEMD_APP} successfully"
-	else
-		_log "Failed to enable ${SYSTEMD_APP}"
+		return
 	fi
+
+	_log "Failed to enable ${SYSTEMD_APP}"
 }
 
 disable() {
@@ -207,9 +221,10 @@ disable() {
 
 	if ! sudo systemctl -q is-enabled "${SYSTEMD_APP}"; then
 		_log "Disabled ${SYSTEMD_APP} successfully"
-	else
-		_log "Failed to disable ${SYSTEMD_APP}"
+		return
 	fi
+
+	_log "Failed to disable ${SYSTEMD_APP}"
 }
 
 start() {
@@ -224,11 +239,12 @@ start() {
 
 	if sudo systemctl -q is-active "${SYSTEMD_APP}"; then
 		_log "Started ${SYSTEMD_APP} successfully"
-	else
-		_log "Failed to start ${SYSTEMD_APP}"
-		echo
-		status
+		return
 	fi
+
+	_log "Failed to start ${SYSTEMD_APP}"
+	echo
+	status
 }
 
 stop() {
@@ -243,11 +259,12 @@ stop() {
 
 	if ! sudo systemctl -q is-active "${SYSTEMD_APP}"; then
 		_log "Stopped ${SYSTEMD_APP} successfully"
-	else
-		_log "Failed to stop ${SYSTEMD_APP}"
-		echo
-		status
+		return
 	fi
+
+	_log "Failed to stop ${SYSTEMD_APP}"
+	echo
+	status
 }
 
 restart() {
@@ -274,9 +291,7 @@ follow() {
 [[ -z "${1}" ]] && CMD="status" || CMD="${1/_/}"
 
 # Check if argument exists
-if ! grep -Eq "^${CMD}\(\)\ {\$" "${HELPER_FILE}"; then
-	_usage
-fi
+grep -Eq "^${CMD}\(\)\ {\$" "${HELPER_FILE}" || _usage
 
 _platform_check "${CMD}"
 
