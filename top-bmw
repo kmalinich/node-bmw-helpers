@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+top -p "$(ps -e -o pid,cmd | awk '/[b]mwcd|[b]mwi@|[b]luealsa\ |[b]luealsa\-aplay|nginx/ {printf $1 ","}' | sed 's/,$//g')"

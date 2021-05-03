@@ -14,7 +14,7 @@ WorkingDirectory = /usr/local/bmwi
 Environment = NODE_ENV=production
 Environment = NODE_PATH=/usr/local/bmwi/lib:/usr/local/bmwi/modules:/usr/local/bmwi/share:/usr/local/bmwi/node_modules:/usr/lib/node_modules
 
-ExecStart = /usr/bin/env node --arm-arch=armv8 --always-compact --always-osr --expose-gc --throw-deprecation --trace-warnings /usr/local/bmwi/main.js %i
+ExecStart = /usr/bin/env node --title=bmwcd --throw-deprecation --trace-uncaught --trace-deprecation --trace-warnings . %i
 
 Restart    = always
 RestartSec = 5

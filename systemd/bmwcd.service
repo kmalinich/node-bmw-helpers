@@ -13,7 +13,7 @@ WorkingDirectory = /usr/local/bmwcd
 Environment = NODE_ENV=production
 Environment = NODE_PATH=/usr/local/bmwcd/lib:/usr/local/bmwcd/modules:/usr/local/bmwcd/share:/usr/local/bmwcd/node_modules:/usr/lib/node_modules
 
-ExecStart = /usr/bin/env node --arm-arch=armv8 --always-compact --always-osr --expose-gc --throw-deprecation --trace-warnings /usr/local/bmwcd/main.js
+ExecStart = /usr/bin/env node --title=bmwcd --throw-deprecation --trace-uncaught --trace-deprecation --trace-warnings .
 
 Restart    = always
 RestartSec = 5
