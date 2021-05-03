@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
 
-top -p "$(ps -e -o pid,cmd | awk '/[b]mwcd|[b]mwi@|[b]luealsa\ |[b]luealsa\-aplay|nginx/ {printf $1 ","}' | sed 's/,$//g')"
+# top -p "$(ps -e -o pid,cmd | awk '/[b]mwcd|[b]mwi@|[b]luealsa\ |[b]luealsa\-aplay|nginx/ {printf $1 ","}' | sed 's/,$//g')"
+
+# Alternate directory for separate settings file
+HOME="${HOME}/.toprc-service"
+mkdir -p "${HOME}"
+
+top -p "$(ps -e -o pid,cmd | awk '/[b]mwcd|[b]mwi@/ {printf $1 ","}' | sed 's/,$//g')"
